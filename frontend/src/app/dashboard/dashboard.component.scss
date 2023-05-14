@@ -1,0 +1,28 @@
+.dashboard-body {
+    background-color: #333333; /* replace with your desired dark color */
+    color: #a33d3d; /* set text color to white or another contrasting color */;
+    height: 91vh;
+}
+
+.dashboard-title {
+    font-family: Courier New; /* replace with your desired coding-like font */
+    color: white;
+    text-align: center;
+    padding-top: 3rem; /* adjust as needed */
+    font-size: 300%;
+}
+
+.dashboard-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding-top: 5rem;
+  }
+
+  .wide-button {
+    width: 200px;
+  }
+  
+  

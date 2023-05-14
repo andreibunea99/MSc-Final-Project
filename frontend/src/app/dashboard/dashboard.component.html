@@ -1,0 +1,21 @@
+<app-toolbar></app-toolbar>
+<div class="dashboard-body">
+  <h1 class="dashboard-title">Dashboard</h1>
+  <div class="dashboard-buttons">
+    <button mat-raised-button color="primary" (click)="openVideoUploadDialog()" class="mat-button-block" class="wide-button">Upload Video</button>
+    <button mat-raised-button color="primary" (click)="openPictureUploadDialog()" class="mat-button-block" class="wide-button">Upload Pictures</button>
+    <button mat-raised-button color="primary" routerLink="/" class="mat-button-block" class="wide-button">Portfolio</button>
+  </div>  
+</div>
+
+<!-- Video Upload Dialog -->
+<ng-template #videoUploadDialog>
+  <h2>Upload Video</h2>
+  <!-- Your video upload form goes here -->
+</ng-template>
+
+<!-- Picture Upload Dialog -->
+<ng-template #pictureUploadDialog>
+  <h2>Upload Pictures</h2>
+  <!-- Your picture upload form goes here -->
+</ng-template>
