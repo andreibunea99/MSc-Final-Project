@@ -43,3 +43,6 @@ frontend/Thumbs.db
 
 # Meshroom
 meshroom_CLI/Meshroom-2020.1.1-win64/*
+image_dataset/*
+video/*
+output/*
