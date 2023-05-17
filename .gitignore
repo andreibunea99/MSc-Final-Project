@@ -40,3 +40,6 @@ frontend/testem.log
 # System files
 frontend/.DS_Store
 frontend/Thumbs.db
+
+# Meshroom
+meshroom_CLI/*

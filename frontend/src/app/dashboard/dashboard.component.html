@@ -11,11 +11,15 @@
 <!-- Video Upload Dialog -->
 <ng-template #videoUploadDialog>
   <h2>Upload Video</h2>
-  <!-- Your video upload form goes here -->
+  <input type="file" (change)="onVideoFileSelected($event)" accept="video/*">
+  <button mat-button color="primary" (click)="submitVideo()">Submit</button>
 </ng-template>
 
 <!-- Picture Upload Dialog -->
 <ng-template #pictureUploadDialog>
   <h2>Upload Pictures</h2>
-  <!-- Your picture upload form goes here -->
+  <input type="file" multiple (change)="onPictureFilesSelected($event)" accept="image/*">
+  <button mat-button color="primary" (click)="submitPictures()">Submit</button>
 </ng-template>
+
+

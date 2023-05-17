@@ -19,6 +19,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { PortfolioComponent } from './portfolio/portfolio.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
+    HttpClientModule,
     AuthModule.forRoot({
       domain: 'dev-szjwraid.us.auth0.com',
       clientId: 'UHnANfEnaGG9pLeZU0KkNhmL1fEaRZaI',
