@@ -42,4 +42,4 @@ frontend/.DS_Store
 frontend/Thumbs.db
 
 # Meshroom
-meshroom_CLI/*
+meshroom_CLI/Meshroom-2020.1.1-win64/*

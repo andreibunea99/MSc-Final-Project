@@ -1,0 +1,1 @@
+python Meshroom_CLI.py "E:\meshroom_CLI\Meshroom-2020.1.1-win64\Meshroom-2020.1.1\aliceVision\bin" "E:\meshroom_CLI\output_statue" "E:\meshroom_CLI\statue"
