@@ -1,1 +1,14 @@
 <app-toolbar></app-toolbar>
+
+<div class="portfolio-body">
+  <h1 class="portfolio-title">Portfolio</h1>
+
+  <div class="model-grid">
+    <div *ngFor="let model of models; let i = index" class="model-card">
+      <div class="model-preview" id="model-preview-{{model.id}}"></div>
+      <div class="model-name">
+        {{ model.obj_data }}
+      </div>
+    </div>
+  </div>
+</div>

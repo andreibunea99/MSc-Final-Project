@@ -1,7 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,13 +16,14 @@ export class DashboardComponent implements OnInit {
 
   videoFile: File | any;
   pictureFiles: File[] = [];
+  previewImageFile: File | any;
+  modelName: string = '';
 
   constructor(public authService: AuthService, private dialog: MatDialog, private http: HttpClient) {}
 
   loggedUser: any;
 
   ngOnInit(): void {
-    // console log user info
     this.authService.user$.subscribe(user => this.loggedUser = user);
     console.log(this.authService.isAuthenticated$);
   }
@@ -43,6 +46,11 @@ export class DashboardComponent implements OnInit {
     this.pictureFiles = inputElement.files ? Array.from(inputElement.files) : [];
   }
 
+  onPreviewImageSelected(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.previewImageFile = inputElement.files?.item(0);
+  }
+
   submitVideo(): void {
     if (!this.videoFile) {
       console.error('No video file selected');
@@ -51,6 +59,9 @@ export class DashboardComponent implements OnInit {
 
     const formData = new FormData();
     formData.append('video', this.videoFile);
+    formData.append('preview', this.previewImageFile);
+    formData.append('email', this.loggedUser.email);
+    formData.append('name', this.modelName);
 
     this.http.post('http://127.0.0.1:5000/upload/video', formData).subscribe(
       () => {
@@ -77,6 +88,10 @@ export class DashboardComponent implements OnInit {
       formData.append('images', this.pictureFiles[i]);
     }
 
+    formData.append('preview', this.previewImageFile);
+    formData.append('email', this.loggedUser.email);
+    formData.append('name', this.modelName);
+
     this.http.post('http://127.0.0.1:5000/upload/images', formData).subscribe(
       () => {
         console.log('Pictures uploaded successfully');
@@ -89,5 +104,9 @@ export class DashboardComponent implements OnInit {
     );
 
     this.dialog.closeAll();
+  }
+
+  closeDialog(): void {	
+    this.dialog.closeAll();	
   }
 }

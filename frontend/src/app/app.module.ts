@@ -20,6 +20,9 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 import {HttpClientModule} from '@angular/common/http';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -43,6 +46,9 @@ import {HttpClientModule} from '@angular/common/http';
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
     HttpClientModule,
     AuthModule.forRoot({
       domain: 'dev-szjwraid.us.auth0.com',
