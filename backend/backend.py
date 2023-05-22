@@ -1,9 +1,10 @@
 import os
 import subprocess
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, send_from_directory
 from flask_cors import CORS
 import cv2
 import shutil
+import base64
 
 app = Flask(__name__)
 CORS(app)
@@ -137,42 +138,47 @@ def upload_video():
 
     return 'Video uploaded successfully'
 
+@app.route('/files/<email>/<path:file_path>')
+def serve_file(email, file_path):
+    DB = r'E:\Final_Project\repo\MSc-Final-Project\database'
+    user_directory = os.path.join(DB, email)
+    return send_from_directory(user_directory, file_path)
 
 @app.route('/models/<email>', methods=['GET'])
 def get_user_models(email):
-    # Retrieve the models from app.config['DATABASE_FOLDER']/email directory and return .png files as list, the .obj file and .mtl file
     user_directory = os.path.join(DATABASE_FOLDER, email)
     if not os.path.exists(user_directory):
-        os.makedirs(user_directory)
-
-    # Count the number of directories inside the user's directory
-    existing_models = [name for name in os.listdir(user_directory) if os.path.isdir(os.path.join(user_directory, name))]
-    model_count = len(existing_models)
+        return 'User directory not found', 404
 
     models = []
-    for i in range(0, model_count):  
-        model = {}
-        model['id'] = i + 1
-
-        # There are multiple files, so we need to get all of them
-        model_directory_name = f"model_{i + 1}"
+    for model_directory_name in os.listdir(user_directory):
         model_directory_path = os.path.join(user_directory, model_directory_name)
+        if os.path.isdir(model_directory_path):
+            model = {}
 
-        # Get the .png files and return them as a list
-        model['textures'] = []
-        for file_name in os.listdir(model_directory_path):
-            if file_name.endswith('.png'):
-                model['textures'].append(file_name)
+            # Get the file paths
+            model['obj'] = f"/files/{email}/{os.path.join(model_directory_name, 'texturedMesh.obj')}"
+            model['mtl'] = f"/files/{email}/{os.path.join(model_directory_name, 'texturedMesh.mtl')}"
+            model['preview'] = f"/files/{email}/{os.path.join(model_directory_name, 'preview.jpg')}"
 
-        # Get the .obj file
-        model['obj'] = f'model_{i}.obj'
+            textures = []
+            for file_name in os.listdir(model_directory_path):
+                if file_name.endswith('.png'):
+                    texture_path = os.path.join(model_directory_path, file_name)
+                    textures.append({
+                        'filename': file_name,
+                        'path': f"/files/{email}/{texture_path}"
+                    })
+            model['textures'] = textures
 
-        # Get the .mtl file
-        model['mtl'] = f'model_{i}.mtl'
+            # Get the name of the model (name of the directory)
+            model['name'] = model_directory_name
 
-        models.append(model)
-    
+            models.append(model)
+
     return jsonify(models)
+
+
 
 
 

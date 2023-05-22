@@ -2,13 +2,16 @@
 
 <div class="portfolio-body">
   <h1 class="portfolio-title">Portfolio</h1>
-
-  <div class="model-grid">
-    <div *ngFor="let model of models; let i = index" class="model-card">
-      <div class="model-preview" id="model-preview-{{model.id}}"></div>
-      <div class="model-name">
-        {{ model.obj_data }}
+  <div class="portfolio-grid">
+    <div *ngFor="let model of models" class="portfolio-item">
+      <img [src]="model.preview" alt="Preview Image">
+      <div class="model-name">{{ model.name }}</div>
+      <div class="action-icons">
+        <i class="fas fa-download" (click)="downloadModel(model)"></i>
+        <i class="fas fa-pencil-alt" (click)="renameModel(model)"></i>
+        <i class="fas fa-trash" (click)="deleteModel(model)"></i>
       </div>
     </div>
   </div>
 </div>
+

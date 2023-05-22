@@ -22,7 +22,49 @@
   }
 
   .wide-button {
-    width: 200px;
+    width: 20%;
+  }
+  
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .portfolio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  
+  .portfolio-item img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .portfolio-item .model-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .portfolio-item .action-icons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+  }
+  
+  .portfolio-item .action-icons i {
+    cursor: pointer;
+  }
+  
+  .portfolio-item .action-icons i:hover {
+    color: #00a0d6;
   }
   
   
