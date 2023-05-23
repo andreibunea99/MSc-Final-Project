@@ -7,11 +7,30 @@
       <img [src]="model.preview" alt="Preview Image">
       <div class="model-name">{{ model.name }}</div>
       <div class="action-icons">
-        <i class="fas fa-download" (click)="downloadModel(model)"></i>
-        <i class="fas fa-pencil-alt" (click)="renameModel(model)"></i>
-        <i class="fas fa-trash" (click)="deleteModel(model)"></i>
+        <button mat-icon-button color="accent" (click)="downloadModel(model)">
+          <mat-icon>cloud_download</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" (click)="openEditModelDialog(model)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" (click)="deleteModel(model)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Rename Model Dialog -->
+<ng-template #editModelDialog let-model>
+  <div class="dialog-content">
+    <h2>Rename Model</h2>
+    <input type="text" [(ngModel)]="newModelName" placeholder="Enter new model name" required>
+    <br><br>
+    <h2>Upload Preview Image</h2>
+    <input type="file" (change)="onPreviewImageSelected($event)" accept="image/*">
+    <br><br>
+    <button mat-raised-button color="primary" (click)="submitEditModel(model)">Submit</button>
+    <button mat-stroked-button color="primary" (click)="closeDialog()">Cancel</button>
+  </div>
+</ng-template>

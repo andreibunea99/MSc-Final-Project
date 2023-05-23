@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -12,8 +13,12 @@ export class PortfolioComponent implements OnInit {
 
   loggedUser: any;
   models: any[] = [];
+  editedModel: any;
+  newModelName: string = '';
+  previewImage: File | null = null;
+  @ViewChild('editModelDialog') editModelDialog!: TemplateRef<any>;
 
-  constructor(public authService: AuthService, private http: HttpClient) {}
+  constructor(public authService: AuthService, private http: HttpClient, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
@@ -59,6 +64,52 @@ export class PortfolioComponent implements OnInit {
         console.error('Error downloading model:', error);
       }
     );
+  }
+
+  openEditModelDialog(model: any): void {
+    this.editedModel = model;
+    this.dialog.open(this.editModelDialog);
+  }
+
+  submitEditModel(model: any): void {
+    if (!this.newModelName) {
+      return;
+    }
+
+    const apiUrl = `http://localhost:5000/edit/model`;
+    const formData = new FormData();
+    formData.append('email', this.loggedUser.email);
+    formData.append('model_name', this.editedModel.name);
+    formData.append('new_name', this.newModelName);
+    if (this.previewImage) {
+      formData.append('preview', this.previewImage);
+    }
+
+    this.http.post(apiUrl, formData, { responseType: 'text' }).subscribe(
+      (response: any) => {
+        console.log(response); // Log the response for debugging purposes
+        if (response === 'Model renamed successfully') {
+          // Model renamed successfully, perform any necessary actions (e.g., update the models list)
+          // Close the rename model dialog
+          this.dialog.closeAll();
+          this.ngOnInit();
+        } else {
+          console.error('Error renaming model:', response);
+        }
+      },
+      (error: any) => {
+        console.error('Error renaming model:', error);
+      }
+    );
+    
+  }
+
+  onPreviewImageSelected(event: any): void {
+    this.previewImage = event.target.files[0];
+  }
+
+  closeDialog(): void {
+    this.dialog.closeAll();
   }
 
   renameModel(model: any): void {

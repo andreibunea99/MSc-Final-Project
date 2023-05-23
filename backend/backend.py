@@ -179,6 +179,34 @@ def get_user_models(email):
     return jsonify(models)
 
 
+@app.route('/edit/model', methods=['POST'])
+def rename_model():
+    user_email = request.form.get('email')
+    model_name = request.form.get('model_name')
+    new_name = request.form.get('new_name')
+
+    user_directory = os.path.join(DATABASE_FOLDER, user_email)
+    model_directory_path = os.path.join(user_directory, model_name)
+    new_directory_path = os.path.join(user_directory, new_name)
+    print(user_email, model_name, new_name)
+
+    if not os.path.exists(user_directory) or not os.path.exists(model_directory_path):
+        return 'User or model directory not found', 404
+
+    if os.path.exists(new_directory_path):
+        return 'New name already exists', 409
+
+    try:
+        os.rename(model_directory_path, new_directory_path)
+
+        preview = request.files.get('preview')
+        if preview:
+            preview_path = os.path.join(new_directory_path, 'preview.jpg')
+            preview.save(preview_path)
+
+        return 'Model renamed successfully'
+    except Exception as e:
+        return f'Error renaming model: {str(e)}', 500
 
 
 

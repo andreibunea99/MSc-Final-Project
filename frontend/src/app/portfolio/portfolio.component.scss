@@ -1,7 +1,7 @@
 .portfolio-body {
     background-color: #333333; /* replace with your desired dark color */
     color: #a33d3d; /* set text color to white or another contrasting color */;
-    height: 91vh;
+    height: 91%;
 }
 
 .portfolio-title {
@@ -38,7 +38,6 @@
     justify-content: center;
     text-align: center;
     padding: 20px;
-    border: 1px solid #ccc;
   }
   
   .portfolio-item img {
@@ -66,5 +65,24 @@
   .portfolio-item .action-icons i:hover {
     color: #00a0d6;
   }
+
+  /* Add this code to your component's SCSS file */
+
+.dialog-content {
+  padding: 20px;
+  background-color: white;
+}
+
+.dialog-content h2 {
+  margin-bottom: 10px;
+}
+
+.dialog-content input[type="file"] {
+  margin-bottom: 15px;
+}
+
+.dialog-content button {
+  margin-right: 10px;
+}
   
   
