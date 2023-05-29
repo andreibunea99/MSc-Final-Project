@@ -179,6 +179,59 @@ def get_user_models(email):
     return jsonify(models)
 
 
+@app.route('/previews/<email>', methods=['GET'])
+def get_user_previews(email):
+    user_directory = os.path.join(DATABASE_FOLDER, email)
+    if not os.path.exists(user_directory):
+        return 'User directory not found', 404
+
+    models = []
+    for model_directory_name in os.listdir(user_directory):
+        model_directory_path = os.path.join(user_directory, model_directory_name)
+        if os.path.isdir(model_directory_path):
+            model = {}
+
+            # Get the file paths
+            model['preview'] = f"/files/{email}/{os.path.join(model_directory_name, 'preview.jpg')}"
+            # Get the name of the model (name of the directory)
+            model['name'] = model_directory_name
+
+            models.append(model)
+
+    return jsonify(models)
+
+
+@app.route('/model/<model_name>/<email>', methods=['GET'])
+def get_user_model(model_name, email):
+    user_directory = os.path.join(DATABASE_FOLDER, email)
+    model_directory_path = os.path.join(user_directory, model_name)
+    if not os.path.exists(user_directory):
+        return 'User directory not found', 404
+
+    model = {}
+    if os.path.isdir(model_directory_path):
+
+        # Get the file paths
+        model['obj'] = f"/files/{email}/{os.path.join(model_name, 'texturedMesh.obj')}"
+        model['mtl'] = f"/files/{email}/{os.path.join(model_name, 'texturedMesh.mtl')}"
+        model['preview'] = f"/files/{email}/{os.path.join(model_name, 'preview.jpg')}"
+
+        textures = []
+        for file_name in os.listdir(model_directory_path):
+            if file_name.endswith('.png'):
+                texture_path = os.path.join(model_directory_path, file_name)
+                textures.append({
+                    'filename': file_name,
+                    'path': f"/files/{email}/{texture_path}"
+                })
+        model['textures'] = textures
+
+        # Get the name of the model (name of the directory)
+        model['name'] = model_name
+
+    return jsonify(model)
+
+
 @app.route('/edit/model', methods=['POST'])
 def rename_model():
     user_email = request.form.get('email')
@@ -211,4 +264,4 @@ def rename_model():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000, debug=True)

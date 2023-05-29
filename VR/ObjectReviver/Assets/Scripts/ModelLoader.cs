@@ -2,17 +2,28 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class ModelLoader : MonoBehaviour
 {
-    public string apiUrl = "http://localhost:5000"; // Replace with your server URL
+    public string apiUrl = "http://192.168.1.65:5000"; // Replace with your server URL
     public string userEmail = "andreialexftw@gmail.com"; // Replace with the desired user email
     public string saveFolder = "SavedModels"; // Replace with the desired save folder name
+    public Text feedbackText;
 
-
-    IEnumerator Start()
+    private void Start()
     {
 
+    }
+
+    public void EnableImporting()
+    {
+        Debug.Log("Importing requst");
+        StartCoroutine(ImportModels());
+    }
+
+    private IEnumerator ImportModels()
+    {
         string savedModelsPath = Path.Combine(Application.persistentDataPath, "SavedModels");
         if (Directory.Exists(savedModelsPath))
         {
@@ -26,7 +37,7 @@ public class ModelLoader : MonoBehaviour
         Debug.Log("Created SavedModels folder.");
 
 
-        string url = apiUrl + "/models/" + userEmail;
+        string url = apiUrl + "/previews/" + userEmail;
 
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
@@ -42,16 +53,19 @@ public class ModelLoader : MonoBehaviour
                 string modelFolder = Path.Combine(savedModelsPath, model.name);
                 Directory.CreateDirectory(modelFolder);
 
-                StartCoroutine(DownloadAndSaveModel(apiUrl + model.obj, modelFolder));
+                //StartCoroutine(DownloadAndSaveModel(apiUrl + model.obj, modelFolder));
                 StartCoroutine(DownloadAndSaveImage(apiUrl + model.preview, modelFolder));
-                StartCoroutine(DownloadAndSaveMtl(apiUrl + model.mtl, modelFolder));
+                //StartCoroutine(DownloadAndSaveMtl(apiUrl + model.mtl, modelFolder));
 
-                foreach (TextureData texture in model.textures)
+                /*foreach (TextureData texture in model.textures)
                 {
                     string texturePath = apiUrl + "/files/" + userEmail + "/" + model.name + "/" + texture.filename;
                     StartCoroutine(DownloadAndSaveTexture(texturePath, modelFolder));
-                }
+                }*/
             }
+
+            yield return new WaitForSeconds(1);
+            feedbackText.text = "Import Complete! Now Generate the models!";
         }
         else
         {
