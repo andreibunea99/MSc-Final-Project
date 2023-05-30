@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using Dummiesman;
 
 public class ModelPreviewsDisplay : MonoBehaviour
 {
@@ -132,8 +133,6 @@ public class ModelPreviewsDisplay : MonoBehaviour
                 StartCoroutine(DownloadAndSaveTexture(texturePath, currentModelPath));
             }
 
-            // Use the model data to spawn the object
-            SpawnObject(modelData.obj, modelData.mtl, modelData.textures);
         }
         else
         {
@@ -141,16 +140,27 @@ public class ModelPreviewsDisplay : MonoBehaviour
         }
     }
 
-    private void SpawnObject(string objUrl, string mtlUrl, TextureData[] textures)
+    public void SpawnObject()
     {
-        // Implement the OBJLoader and texture loading logic to spawn the object using the provided URLs and textures
-        // ...
+        string currentModelPath = Path.Combine(Application.persistentDataPath, "CurrentModel");
 
-        // For example, you can use the following code to spawn a primitive cube as a placeholder:
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = Vector3.zero;
-        cube.transform.localScale = Vector3.one;
+        // Load the OBJ file path
+        string objFilePath = Path.Combine(currentModelPath, "texturedMesh.obj");
+
+        // Load the MTL file path
+        string mtlFilePath = Path.Combine(currentModelPath, "texturedMesh.mtl");
+
+
+        Debug.LogError(mtlFilePath + "        " + objFilePath);
+
+        GameObject loadedObj = new OBJLoader().Load(objFilePath, mtlFilePath);
+
+        // Set the position and scale of the imported object
+        loadedObj.transform.position = Vector3.zero;
+        loadedObj.transform.localScale = Vector3.one;
     }
+
+
 
     IEnumerator DownloadAndSaveModel(string url, string saveFolder)
     {
