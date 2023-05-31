@@ -13,6 +13,9 @@ public class ModelPreviewsDisplay : MonoBehaviour
     public Text feedbackText;
     public string apiUrl = "http://192.168.1.65:5000"; // Replace with your server URL
     public string userEmail = "andreialexftw@gmail.com"; // Replace with the desired user email
+    private GameObject spawnedObject;
+    public float translationIncrement = 0.1f;
+    public float rotationIncrement = 90.0f;
 
     private void Start()
     {
@@ -90,7 +93,7 @@ public class ModelPreviewsDisplay : MonoBehaviour
     private void OnPreviewClicked(string modelDirectory)
     {
         string modelName = Path.GetFileName(modelDirectory);
-        Debug.Log("The model '" + modelName + "' has been clicked.");
+        feedbackText.text = "Model selected! Now Click the \"Spawn model\" button!";
         StartCoroutine(GetModelData(modelName));
     }
 
@@ -140,8 +143,18 @@ public class ModelPreviewsDisplay : MonoBehaviour
         }
     }
 
+    private void DestroySpawnedObject()
+    {
+        if (spawnedObject != null)
+        {
+            Destroy(spawnedObject);
+            spawnedObject = null;
+        }
+    }
+
     public void SpawnObject()
     {
+        DestroySpawnedObject();
         string currentModelPath = Path.Combine(Application.persistentDataPath, "CurrentModel");
 
         // Load the OBJ file path
@@ -150,14 +163,105 @@ public class ModelPreviewsDisplay : MonoBehaviour
         // Load the MTL file path
         string mtlFilePath = Path.Combine(currentModelPath, "texturedMesh.mtl");
 
-
-        Debug.LogError(mtlFilePath + "        " + objFilePath);
-
-        GameObject loadedObj = new OBJLoader().Load(objFilePath, mtlFilePath);
+        spawnedObject = new OBJLoader().Load(objFilePath, mtlFilePath);
 
         // Set the position and scale of the imported object
-        loadedObj.transform.position = Vector3.zero;
-        loadedObj.transform.localScale = Vector3.one;
+        spawnedObject.transform.position = new Vector3(0, 0, 2);
+        spawnedObject.transform.localScale = Vector3.one;
+
+        MeshRenderer meshRenderer = spawnedObject.AddComponent<MeshRenderer>();
+
+        // Place the object on the floor
+        PlaceObjectOnFloor(spawnedObject);
+
+        feedbackText.text = "Model Spawned!";
+    }
+
+    private void PlaceObjectOnFloor(GameObject obj)
+    {
+        // Find the floor's position
+        RaycastHit hit;
+        if (Physics.Raycast(obj.transform.position, Vector3.down, out hit))
+        {
+            // Calculate the position where the object should be placed
+            Vector3 objectPosition = hit.point;
+            Renderer renderer = obj.GetComponent<Renderer>();
+            Vector3 objectBounds = renderer.bounds.extents;
+
+            // Adjust the object's position based on its size
+            objectPosition.y += objectBounds.y;
+
+            // Set the object's position to be on the floor
+            obj.transform.position = objectPosition;
+        }
+        else
+        {
+            Debug.LogWarning("Floor not found. Object will be spawned at default position.");
+        }
+    }
+
+    public void moveUp()
+    {
+        if (spawnedObject != null)
+        {
+            spawnedObject.transform.Translate(Vector3.up * translationIncrement);
+        }
+    }
+
+    public void moveDown()
+    {
+        if (spawnedObject != null)
+        {
+            spawnedObject.transform.Translate(Vector3.down * translationIncrement);
+        }
+    }
+
+    public void rotateXLeft()
+    {
+        if (spawnedObject != null)
+        {
+            spawnedObject.transform.Rotate(Vector3.left * 10.0f, Space.Self);
+        }
+    }
+
+    public void rotateXRight()
+    {
+        if (spawnedObject != null)
+        {
+            spawnedObject.transform.Rotate(Vector3.right * 10.0f, Space.Self);
+        }
+    }
+
+    public void rotateYLeft()
+    {
+        if (spawnedObject != null)
+        {
+            spawnedObject.transform.Rotate(Vector3.down * 10.0f, Space.Self);
+        }
+    }
+
+    public void rotateYRight()
+    {
+        if (spawnedObject != null)
+        {
+            spawnedObject.transform.Rotate(Vector3.up * 10.0f, Space.Self);
+        }
+    }
+
+    public void rotateZLeft()
+    {
+        if (spawnedObject != null)
+        {
+            spawnedObject.transform.Rotate(Vector3.forward * 10.0f, Space.Self);
+        }
+    }
+
+    public void rotateZRight()
+    {
+        if (spawnedObject != null)
+        {
+            spawnedObject.transform.Rotate(Vector3.back * 10.0f, Space.Self);
+        }
     }
 
 
