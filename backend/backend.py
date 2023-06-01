@@ -5,9 +5,23 @@ from flask_cors import CORS
 import cv2
 import shutil
 import base64
+import mysql.connector
 
 app = Flask(__name__)
 CORS(app)
+
+# MySQL database connection configuration
+db_config = {
+    'host': 'object-reviver-db.c9rmrlpboxxi.us-east-2.rds.amazonaws.com',
+    'port': 3306,
+    'user': 'admin',
+    'password': 'andreialex',
+    'database': 'object-reviver'
+}
+
+# Create a MySQL connection
+connection = mysql.connector.connect(**db_config)
+cursor = connection.cursor()
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(), '../image_dataset')
 VIDEO_FOLDER = os.path.join(os.getcwd(), '../video')
@@ -260,6 +274,56 @@ def rename_model():
         return 'Model renamed successfully'
     except Exception as e:
         return f'Error renaming model: {str(e)}', 500
+
+
+# Endpoint for user registration
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    first_name = data['first_name']
+    last_name = data['last_name']
+    email = data['email']
+    password = data['password']
+
+    try:
+        # Insert the user into the database
+        sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (%s, %s, %s, %s)"
+        values = (first_name, last_name, email, password)
+        cursor.execute(sql, values)
+        connection.commit()
+
+        return jsonify({'message': 'User registered successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+
+    try:
+        # Check if the email exists in the users table
+        sql = "SELECT * FROM users WHERE email = %s"
+        values = (email,)
+        cursor.execute(sql, values)
+        user = cursor.fetchone()
+
+        if user: 
+            if password == user[4]:
+                # Password matched, return the user's first name, last name, and email
+                return jsonify({
+                    'firstName': user[1],
+                    'lastName': user[2],
+                    'email': user[3]
+                })
+            else:
+                return jsonify({'message': 'Invalid email or password'}), 500
+        else:
+            return jsonify({'message': 'Invalid email or password'}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 

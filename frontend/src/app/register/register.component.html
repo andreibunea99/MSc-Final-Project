@@ -1,0 +1,27 @@
+<app-toolbar></app-toolbar>
+
+<div class="centered-dialog">
+  <div class="dialog-content">
+    <div class="grid-container">
+      <div>
+        <h2>First Name</h2>
+        <input type="text" [(ngModel)]="firstName" placeholder="First Name">
+      </div>
+      <div>
+        <h2>Last Name</h2>
+        <input type="text" [(ngModel)]="lastName" placeholder="Last Name">
+      </div>
+    </div>
+    <div class="stacked-inputs">
+      <h2>Email</h2>
+      <input type="email" [(ngModel)]="email" placeholder="Email">
+      <h2>Password</h2>
+      <input type="password" [(ngModel)]="password" placeholder="Password">
+    </div>
+    <div class="centered-buttons">
+      <button mat-raised-button color="primary" (click)="submitRegister()">Submit</button>
+      <button mat-stroked-button color="primary" (click)="cancelRegister()">Cancel</button>
+    </div>
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+</div>

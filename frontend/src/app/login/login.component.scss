@@ -1,0 +1,31 @@
+.centered-dialog {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: -5%;
+}
+
+.dialog-content {
+    padding: 20px;
+    background-color: white;
+}
+
+.dialog-content h2 {
+    margin-bottom: 10px;
+}
+
+.dialog-content input[type="file"] {
+    margin-bottom: 15px;
+}
+
+.dialog-content button {
+    margin-right: 10px;
+}
+
+.error-message {
+    color: red;
+}
+  
+  

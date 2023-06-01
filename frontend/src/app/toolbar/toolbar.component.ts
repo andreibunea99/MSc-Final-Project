@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-toolbar',
@@ -8,12 +7,23 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class ToolbarComponent implements OnInit{
 
-  constructor(public authService: AuthService) {}
-  loggedUser: any;
+  isAuthenticated: boolean = false;
+  loggedUser!: { firstName: string; lastName: string; };
 
   ngOnInit(): void {
-    // console log user info
-    this.authService.user$.subscribe(user => this.loggedUser = user);
-    console.log(this.authService.isAuthenticated$);
+    this.isAuthenticated = !!localStorage.getItem('email');
+    this.loggedUser = {
+      firstName: localStorage.getItem('firstName') ?? '',
+      lastName: localStorage.getItem('lastName') ?? ''
+    };
   }
+
+  logout(): void {
+    // Clear localStorage and perform any other logout operations
+    localStorage.clear();
+    // Redirect to the login page
+    // Replace '/login' with your actual login route path
+    window.location.href = '/login';
+  }
+  
 }

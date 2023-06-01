@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
+import { API_URL } from '../config';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,13 +19,10 @@ export class DashboardComponent implements OnInit {
   previewImageFile: File | any;
   modelName: string = '';
 
-  constructor(public authService: AuthService, private dialog: MatDialog, private http: HttpClient) {}
-
-  loggedUser: any;
+  constructor(private dialog: MatDialog, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(user => this.loggedUser = user);
-    console.log(this.authService.isAuthenticated$);
+    
   }
 
   openVideoUploadDialog(): void {
@@ -60,10 +57,10 @@ export class DashboardComponent implements OnInit {
     const formData = new FormData();
     formData.append('video', this.videoFile);
     formData.append('preview', this.previewImageFile);
-    formData.append('email', this.loggedUser.email);
+    formData.append('email', localStorage.getItem('email') ?? '');
     formData.append('name', this.modelName);
 
-    this.http.post('http://127.0.0.1:5000/upload/video', formData).subscribe(
+    this.http.post(API_URL + 'upload/video', formData).subscribe(
       () => {
         console.log('Video uploaded successfully');
         // Handle success here
@@ -89,10 +86,10 @@ export class DashboardComponent implements OnInit {
     }
 
     formData.append('preview', this.previewImageFile);
-    formData.append('email', this.loggedUser.email);
+    formData.append('email', localStorage.getItem('email') ?? '');
     formData.append('name', this.modelName);
 
-    this.http.post('http://127.0.0.1:5000/upload/images', formData).subscribe(
+    this.http.post(API_URL + 'upload/images', formData).subscribe(
       () => {
         console.log('Pictures uploaded successfully');
         // Handle success here
