@@ -303,10 +303,14 @@ def login():
     email = data['email']
     password = data['password']
 
+    print(data)
+    print(type(email))
     try:
         # Check if the email exists in the users table
         sql = "SELECT * FROM users WHERE email = %s"
         values = (email,)
+        # Print the SQL query
+        # print("SQL query:", sql % values)
         cursor.execute(sql, values)
         user = cursor.fetchone()
 

@@ -11,8 +11,8 @@ public class ModelPreviewsDisplay : MonoBehaviour
     public GameObject previewPrefab;
     public Transform panelParent;
     public Text feedbackText;
-    public string apiUrl = "http://192.168.1.65:5000"; // Replace with your server URL
-    public string userEmail = "andreialexftw@gmail.com"; // Replace with the desired user email
+    public string apiUrl = "http://192.168.1.66:5000"; // Replace with your server URL
+    public string userEmail = "andreialexbunea@yahoo.com"; // Replace with the desired user email
     private GameObject spawnedObject;
     public float translationIncrement = 0.1f;
     public float rotationIncrement = 90.0f;
@@ -100,7 +100,7 @@ public class ModelPreviewsDisplay : MonoBehaviour
     private IEnumerator GetModelData(string modelName)
     {
         Debug.Log("INTRU AICI");
-        string email = "andreialexftw@gmail.com"; // Replace with the desired user email
+        string email = userEmail; // Replace with the desired user email
 
         string url = apiUrl + "/model/" + modelName + "/" + email;
 
@@ -163,18 +163,52 @@ public class ModelPreviewsDisplay : MonoBehaviour
         // Load the MTL file path
         string mtlFilePath = Path.Combine(currentModelPath, "texturedMesh.mtl");
 
-        spawnedObject = new OBJLoader().Load(objFilePath, mtlFilePath);
+        //feedbackText.text = objFilePath + " (Size: " + new FileInfo(objFilePath).Length + " bytes)\n" + mtlFilePath + " (Size: " + new FileInfo(mtlFilePath).Length + " bytes)\n";
 
-        // Set the position and scale of the imported object
-        spawnedObject.transform.position = new Vector3(0, 0, 2);
-        spawnedObject.transform.localScale = Vector3.one;
+        // Print directory contents
+        string[] files = Directory.GetFiles(currentModelPath);
+        string directoryContent = "CurrentModel directory contents:\n";
+        foreach (string file in files)
+        {
+            directoryContent += Path.GetFileName(file) + " (Size: " + new FileInfo(file).Length + " bytes)\n";
+        }
+        //feedbackText.text += directoryContent;
 
-        MeshRenderer meshRenderer = spawnedObject.AddComponent<MeshRenderer>();
+        try
+        {
+            spawnedObject = new OBJLoader().Load(objFilePath, mtlFilePath);
 
-        // Place the object on the floor
-        PlaceObjectOnFloor(spawnedObject);
+            // Set the position and scale of the imported object
+            spawnedObject.transform.position = new Vector3(0, 0, 2);
+            spawnedObject.transform.localScale = Vector3.one;
 
-        feedbackText.text = "Model Spawned!";
+            // Add necessary components for rendering
+            MeshRenderer meshRenderer = spawnedObject.AddComponent<MeshRenderer>();
+            //MeshFilter meshFilter = spawnedObject.AddComponent<MeshFilter>();
+
+            // Load the mesh from the OBJ file
+            //ObjImporter objImporter = new ObjImporter();
+            //Mesh loadedMesh = objImporter.ImportFile(objFilePath);
+            //meshFilter.mesh = loadedMesh;
+
+            // Place the object on the floor
+            PlaceObjectOnFloor(spawnedObject);
+
+            // Display the contents of the "CurrentModel" directory
+            /*string[] files = Directory.GetFiles(currentModelPath);
+            string directoryContent = "CurrentModel directory contents:\n";
+            foreach (string file in files)
+            {
+                directoryContent += Path.GetFileName(file) + "\n";
+            }
+            feedbackText.text = directoryContent + "Model Spawned!";
+            feedbackText.text += " Loaded!";*/
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Failed to spawn model: " + ex.Message);
+            feedbackText.text = ex.Message + "\n" + objFilePath + "\n" + mtlFilePath;
+        }
     }
 
     private void PlaceObjectOnFloor(GameObject obj)
@@ -271,9 +305,12 @@ public class ModelPreviewsDisplay : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
 
+        //feedbackText.text = saveFolder + " " + url;
+
         if (request.result == UnityWebRequest.Result.Success)
         {
-            string savePath = Path.Combine(saveFolder, Path.GetFileName(url));
+            string savePath = Path.Combine(saveFolder, "texturedMesh.obj");
+            //feedbackText.text += savePath;
             File.WriteAllBytes(savePath, request.downloadHandler.data);
             Debug.Log("Model saved: " + savePath);
         }
@@ -330,7 +367,7 @@ public class ModelPreviewsDisplay : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            string savePath = Path.Combine(saveFolder, Path.GetFileName(url));
+            string savePath = Path.Combine(saveFolder, "texturedMesh.mtl");
             File.WriteAllText(savePath, request.downloadHandler.text);
             Debug.Log("MTL file saved: " + savePath);
         }
