@@ -11,7 +11,7 @@ public class ModelPreviewsDisplay : MonoBehaviour
     public GameObject previewPrefab;
     public Transform panelParent;
     public Text feedbackText;
-    public string apiUrl = "http://192.168.1.66:5000"; // Replace with your server URL
+    private string apiUrl = "http://192.168.1.65:5000"; // Replace with your server URL
     public string userEmail = "andreialexbunea@yahoo.com"; // Replace with the desired user email
     private GameObject spawnedObject;
     public float translationIncrement = 0.1f;
@@ -20,7 +20,8 @@ public class ModelPreviewsDisplay : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(LoadModelPreviews());
-    }
+        string apiUrl = "http://192.168.1.65:5000";
+}
 
     public void EnablePreviews()
     {
@@ -95,6 +96,11 @@ public class ModelPreviewsDisplay : MonoBehaviour
         string modelName = Path.GetFileName(modelDirectory);
         feedbackText.text = "Model selected! Now Click the \"Spawn model\" button!";
         StartCoroutine(GetModelData(modelName));
+    }
+
+    public void setUserEmail(string email)
+    {
+        userEmail = email;
     }
 
     private IEnumerator GetModelData(string modelName)

@@ -330,6 +330,43 @@ def login():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/followers/<email>', methods=['GET'])
+def get_followers(email):
+    try:
+        # Retrieve the user's ID based on the email
+        sql = "SELECT id FROM users WHERE email = %s"
+        values = (email,)
+        cursor.execute(sql, values)
+        user = cursor.fetchone()
+
+        if user:
+            user_id = user[0]
+
+            # Retrieve the followers of the user
+            sql = "SELECT f.user2, u.email, u.first_name, u.last_name FROM followers f JOIN users u ON f.user2 = u.id WHERE f.user1 = %s"
+            values = (user_id,)
+            cursor.execute(sql, values)
+            followers = cursor.fetchall()
+
+            followers_list = []
+
+            for follower in followers:
+                follower_dict = {
+                    'email': follower[1],
+                    'firstName': follower[2],
+                    'lastName': follower[3]
+                }
+                followers_list.append(follower_dict)
+
+            return jsonify({'followers': followers_list})
+        else:
+            return jsonify({'message': 'User not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

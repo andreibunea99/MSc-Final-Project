@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ModelLoader : MonoBehaviour
 {
-    public string apiUrl = "http://192.168.1.66:5000"; // Replace with your server URL
+    private string apiUrl = "http://192.168.1.65:5000"; // Replace with your server URL
     public string userEmail = "andreialexbunea@yahoo.com"; // Replace with the desired user email
     public string saveFolder = "SavedModels"; // Replace with the desired save folder name
     public Text feedbackText;
