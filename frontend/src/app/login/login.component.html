@@ -1,16 +1,20 @@
-<app-toolbar></app-toolbar>
-
-<div class="centered-dialog">
-    <div class="dialog-content">
-      <h2>Login using email</h2>
-      <input type="email" [(ngModel)]="email" placeholder="Email">
-      <br><br>
-      <input type="password" [(ngModel)]="password" placeholder="Password">
-      <br><br>
-      <button mat-raised-button color="primary" (click)="submitLogin()">Submit</button>
-      <button mat-stroked-button color="primary" (click)="cancelLogin()">Cancel</button>
-      <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-    </div>
-</div>
+<div class="login-container">
   
+  <app-toolbar></app-toolbar>
+
+  <div class="centered-dialog">
+      <div class="dialog-content">
+        <h2>Login using email</h2>
+        <input type="email" [(ngModel)]="email" placeholder="Email">
+        <br><br>
+        <input type="password" [(ngModel)]="password" placeholder="Password">
+        <br><br>
+        <button mat-raised-button color="primary" (click)="submitLogin()">Submit</button>
+        <button mat-stroked-button color="primary" (click)="cancelLogin()">Cancel</button>
+        <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+      </div>
+  </div>
+
+</div>
+
   

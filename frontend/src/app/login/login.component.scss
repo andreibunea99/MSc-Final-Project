@@ -10,6 +10,7 @@
 .dialog-content {
     padding: 20px;
     background-color: white;
+    border-radius: 10px;
 }
 
 .dialog-content h2 {
@@ -28,4 +29,10 @@
     color: red;
 }
   
-  
+.login-container {
+  flex: 1;
+  padding: 16px;
+  position: relative;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
+}

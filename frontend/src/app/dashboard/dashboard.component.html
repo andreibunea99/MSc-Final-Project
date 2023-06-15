@@ -1,46 +1,50 @@
-<app-toolbar></app-toolbar>
-<div class="dashboard-body">
-  <h1 class="dashboard-title">Dashboard</h1>
-  <div class="dashboard-buttons">
-    <button mat-raised-button color="primary" (click)="openVideoUploadDialog()" class="mat-button-block" class="wide-button">Upload Video</button>
-    <button mat-raised-button color="primary" (click)="openPictureUploadDialog()" class="mat-button-block" class="wide-button">Upload Pictures</button>
-    <button mat-raised-button color="primary" routerLink="/" class="mat-button-block" class="wide-button">Portfolio</button>
-  </div>  
+<div class="dashboard-container">
+  <app-toolbar></app-toolbar>
+  <div class="dashboard-body">
+    <h1 class="dashboard-title">Dashboard</h1>
+    <div class="dashboard-buttons">
+      <button mat-raised-button color="primary" (click)="openVideoUploadDialog()" class="mat-button-block" class="wide-button">Upload Video</button>
+      <button mat-raised-button color="primary" (click)="openPictureUploadDialog()" class="mat-button-block" class="wide-button">Upload Pictures</button>
+      <button mat-raised-button color="primary" routerLink="/" class="mat-button-block" class="wide-button">Portfolio</button>
+    </div>  
+  </div>
+
+  <!-- Video Upload Dialog -->
+  <ng-template #videoUploadDialog>
+    <div class="dialog-content">
+      <h2>Upload Video</h2>
+      <input type="file" (change)="onVideoFileSelected($event)" accept="video/*">
+      <br><br>
+      <h2>Add Preview Image</h2>
+      <input type="file" (change)="onPreviewImageSelected($event)" accept="image/*">
+      <br><br>
+      <h2>Model Name</h2>
+      <input type="text" [(ngModel)]="modelName" placeholder="Enter collection name">
+      &nbsp; &nbsp;
+      <button mat-raised-button color="primary" (click)="submitVideo()">Submit</button>
+      <button mat-stroked-button color="primary" (click)="closeDialog()">Cancel</button>
+    </div>
+  </ng-template>
+
+  <!-- Picture Upload Dialog -->
+  <ng-template #pictureUploadDialog>
+    <div class="dialog-content">
+      <h2>Upload Pictures</h2>
+      <input type="file" multiple (change)="onPictureFilesSelected($event)" accept="image/*">
+      <br><br>
+      <h2>Add Preview Image</h2>
+      <input type="file" (change)="onPreviewImageSelected($event)" accept="image/*">
+      <br><br>
+      <h2>Model Name</h2>
+      <input type="text" [(ngModel)]="modelName" placeholder="Enter collection name">
+      &nbsp; &nbsp;
+      <button mat-raised-button color="primary" (click)="submitPictures()">Submit</button>
+      <button mat-stroked-button color="primary" (click)="closeDialog()">Cancel</button>
+    </div>
+  </ng-template>
+
 </div>
 
-<!-- Video Upload Dialog -->
-<ng-template #videoUploadDialog>
-  <div class="dialog-content">
-    <h2>Upload Video</h2>
-    <input type="file" (change)="onVideoFileSelected($event)" accept="video/*">
-    <br><br>
-    <h2>Add Preview Image</h2>
-    <input type="file" (change)="onPreviewImageSelected($event)" accept="image/*">
-    <br><br>
-    <h2>Model Name</h2>
-    <input type="text" [(ngModel)]="modelName" placeholder="Enter collection name">
-    &nbsp; &nbsp;
-    <button mat-raised-button color="primary" (click)="submitVideo()">Submit</button>
-    <button mat-stroked-button color="primary" (click)="closeDialog()">Cancel</button>
-  </div>
-</ng-template>
-
-<!-- Picture Upload Dialog -->
-<ng-template #pictureUploadDialog>
-  <div class="dialog-content">
-    <h2>Upload Pictures</h2>
-    <input type="file" multiple (change)="onPictureFilesSelected($event)" accept="image/*">
-    <br><br>
-    <h2>Add Preview Image</h2>
-    <input type="file" (change)="onPreviewImageSelected($event)" accept="image/*">
-    <br><br>
-    <h2>Model Name</h2>
-    <input type="text" [(ngModel)]="modelName" placeholder="Enter collection name">
-    &nbsp; &nbsp;
-    <button mat-raised-button color="primary" (click)="submitPictures()">Submit</button>
-    <button mat-stroked-button color="primary" (click)="closeDialog()">Cancel</button>
-  </div>
-</ng-template>
 
 
 

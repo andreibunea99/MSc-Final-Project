@@ -1,15 +1,25 @@
 .portfolio-body {
-    background-color: #333333; /* replace with your desired dark color */
-    color: #a33d3d; /* set text color to white or another contrasting color */;
+    // background-color: #333333; /* replace with your desired dark color */
+    color: #7b1fa2; /* set text color to white or another contrasting color */;
     height: 91%;
 }
 
+.portfolio-container {
+  flex: 1;
+  padding: 16px;
+  position: relative;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
+}
+
 .portfolio-title {
-    font-family: Courier New; /* replace with your desired coding-like font */
-    color: white;
-    text-align: center;
-    padding-top: 3rem; /* adjust as needed */
-    font-size: 300%;
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  padding-top: 3rem; /* adjust as needed */
+  font-size: 300%;
+  margin-bottom: 4%;
 }
 
 .portfolio-buttons {
@@ -19,52 +29,62 @@
     align-items: center;
     gap: 16px;
     padding-top: 5rem;
-  }
+}
 
-  .wide-button {
-    width: 20%;
-  }
+.wide-button {
+  width: 20%;
+}
   
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  .portfolio-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .portfolio-item img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin-bottom: 10px;
-  }
-  
-  .portfolio-item .model-name {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .portfolio-item .action-icons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
-  }
-  
-  .portfolio-item .action-icons i {
-    cursor: pointer;
-  }
-  
-  .portfolio-item .action-icons i:hover {
-    color: #00a0d6;
-  }
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.portfolio-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(230, 230, 250, 0.8); /* Set the desired background color with low opacity */
+  border-radius: 10px; /* Adjust the border radius to control the rounded corners */
+}
+
+.portfolio-item img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border-radius: 50%; /* Create a circular shape for the preview image */
+}
+
+.portfolio-item .model-name {
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  font-size: 120%;
+}
+
+.portfolio-item .action-icons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.portfolio-item .action-icons button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px;
+  margin: 0 5px;
+}
+
+.portfolio-item .action-icons button:hover {
+  color: white; /* Set the desired hover color */
+}
+
 
   /* Add this code to your component's SCSS file */
 
@@ -84,5 +104,13 @@
 .dialog-content button {
   margin-right: 10px;
 }
-  
+
+.action-button {
+  color: #7b1fa2;
+}
+
+// when hove make it white
+.action-button:hover {
+  color: white;
+}
   

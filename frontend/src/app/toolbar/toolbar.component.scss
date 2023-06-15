@@ -1,9 +1,38 @@
-.example-spacer {
-    flex: 1 1 auto;
+.custom-toolbar {
+  background-color: transparent !important;
 }
 
 .example-user-info {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  color: #FFFFF0;
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  flex: 1;
+  justify-content: flex-end;
 }
-  
+
+.logo {
+  color: #FFFFF0;
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  flex: 1;
+  max-width: 50%;
+  font-size: 130%;
+}
+
+@media (max-width: 600px) {
+  .example-user-info {
+    flex: 1;
+    justify-content: flex-end;
+    font-size: 70%;
+    margin-right: -10%;
+  }
+
+  .logo {
+    max-width: 45%;
+    font-size: 100%;
+    margin-left: -5%;
+  }
+}
+

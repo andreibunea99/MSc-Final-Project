@@ -7,17 +7,22 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  background-image: url('../../assets/images/background.jpg');
+  background-image: url('../../assets/images/v3.jpg');
   background-image: cover;
 }
 
 h1 {
   font-size: 3rem;
   margin-bottom: 2rem;
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  color: white;
 }
 
 button {
-  font-size: 1.5rem;
+  font-size: 1.0rem;
   margin: 0.5rem;
   width: 200px;
+  font-family: 'Arvo', serif;
+  font-weight: 400;
 }

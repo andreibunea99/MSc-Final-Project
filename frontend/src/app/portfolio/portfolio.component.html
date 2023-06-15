@@ -1,3 +1,4 @@
+<div class="portfolio-container">
 <app-toolbar></app-toolbar>
 
 <div class="portfolio-body">
@@ -7,13 +8,13 @@
       <img [src]="model.preview" alt="Preview Image">
       <div class="model-name">{{ model.name }}</div>
       <div class="action-icons">
-        <button mat-icon-button color="accent" (click)="downloadModel(model)">
+        <button mat-icon-button class="action-button" (click)="downloadModel(model)">
           <mat-icon>cloud_download</mat-icon>
         </button>
-        <button mat-icon-button color="accent" (click)="openEditModelDialog(model)">
+        <button mat-icon-button class="action-button" (click)="openEditModelDialog(model)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="accent" (click)="deleteModel(model)">
+        <button mat-icon-button class="action-button" (click)="deleteModel(model)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
@@ -34,3 +35,5 @@
     <button mat-stroked-button color="primary" (click)="closeDialog()">Cancel</button>
   </div>
 </ng-template>
+
+</div>

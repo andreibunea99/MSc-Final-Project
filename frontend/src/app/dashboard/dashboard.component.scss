@@ -1,11 +1,15 @@
-.dashboard-body {
-    background-color: #333333; /* replace with your desired dark color */
-    color: #a33d3d; /* set text color to white or another contrasting color */;
-    height: 91%;
+
+.dashboard-container {
+  flex: 1;
+  padding: 16px;
+  position: relative;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
 }
 
 .dashboard-title {
-    font-family: Courier New; /* replace with your desired coding-like font */
+    font-family: 'Arvo', serif;
+    font-weight: 700;
     color: white;
     text-align: center;
     padding-top: 3rem; /* adjust as needed */
@@ -36,6 +40,8 @@
 /* Adjust button width for better alignment */
 .wide-button {
   width: 20%;
+  font-family: 'Arvo', serif;
+  font-weight: 700;
 }
 
 
@@ -48,6 +54,8 @@
 
 .dialog-content h2 {
   margin-bottom: 10px;
+  font-family: 'Arvo', serif;
+  font-weight: 400;
 }
 
 .dialog-content input[type="file"] {

@@ -30,25 +30,32 @@
   
 
   
-  .grid-container h2,
-  .grid-container input {
-    margin-bottom: 10px;
-  }
+.grid-container h2,
+.grid-container input {
+  margin-bottom: 10px;
+}
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 10px;
-  }
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+}
+
+.stacked-inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.centered-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
   
-  .stacked-inputs {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .centered-buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
+.register-container {
+  flex: 1;
+  padding: 16px;
+  position: relative;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
+}

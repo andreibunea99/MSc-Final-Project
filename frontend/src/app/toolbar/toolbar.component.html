@@ -1,5 +1,7 @@
-<mat-toolbar color="primary">
-  <span>ObjectReviver</span>
+<mat-toolbar class="custom-toolbar" color="primary">
+  <a routerLink="/" style="text-decoration: none;">
+    <span class="logo">Object<span style="color: #7b1fa2;">Reviver</span></span>
+  </a>
   <span class="example-spacer"></span>
   <div *ngIf="!isAuthenticated">
     <button mat-button routerLink="/login">Login</button>
