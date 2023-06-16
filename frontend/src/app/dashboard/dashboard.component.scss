@@ -65,4 +65,11 @@
 .dialog-content button {
   margin-right: 10px;
 }
+
+/* Adjust button width for better alignment on mobile devices */
+@media (max-width: 600px) {
+  .wide-button {
+    width: 80%;
+  }
+}
   
