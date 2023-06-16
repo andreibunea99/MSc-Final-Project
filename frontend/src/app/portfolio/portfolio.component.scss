@@ -1,7 +1,7 @@
 .portfolio-body {
     // background-color: #333333; /* replace with your desired dark color */
     color: #7b1fa2; /* set text color to white or another contrasting color */;
-    height: 91%;
+    min-height: 91vh;
 }
 
 .portfolio-container {
@@ -9,7 +9,7 @@
   padding: 16px;
   position: relative;
   background: linear-gradient(135deg, #667eea, #764ba2);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .portfolio-title {
@@ -95,6 +95,8 @@
 
 .dialog-content h2 {
   margin-bottom: 10px;
+  font-family: 'Arvo', serif;
+  font-weight: 400;
 }
 
 .dialog-content input[type="file"] {
