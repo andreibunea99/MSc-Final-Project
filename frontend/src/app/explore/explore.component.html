@@ -1,0 +1,28 @@
+<div class="explore-container">
+  <app-toolbar></app-toolbar>
+
+  <div class="explore-body">
+    <h1 class="explore-title">Explore</h1>
+
+    <div class="search-section">
+      <mat-form-field appearance="outline" class="search-input">
+        <mat-label>Search by Name</mat-label>
+        <input matInput type="text" [(ngModel)]="searchInput" placeholder="Enter a name">
+        <button mat-button matSuffix (click)="searchUsers()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="user-list">
+      <div *ngFor="let user of users" class="user-row" (click)="selectUser(user)">
+        <div class="user-details">
+          <div class="name">{{ user.firstName }} {{ user.lastName }}</div>
+          <div class="email">{{ user.email }}</div>
+        </div>
+      </div>
+
+      <div *ngIf="users.length === 0" class="no-results">No users found.</div>
+    </div>
+  </div>
+</div>

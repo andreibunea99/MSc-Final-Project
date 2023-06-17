@@ -365,6 +365,117 @@ def get_followers(email):
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/users/search', methods=['GET'])
+def search_users():
+    search_string = request.args.get('name')
+
+    if search_string is None or search_string.strip() == '':
+        # Return 5 hardcoded users manually
+        users = [
+            {'firstName': 'Andrei', 'lastName': 'Bunea', 'email': 'andreialexbunea@yahoo.com'},
+            {'firstName': 'John', 'lastName': 'Doe', 'email': 'johndoe@yahoo.com'},
+            {'firstName': 'Amanda', 'lastName': 'Watson', 'email': 'amandawatson@yahoo.com'},
+            {'firstName': 'Andrei', 'lastName': 'Alex', 'email': 'andreialex@testemail.com'},
+            {'firstName': 'John', 'lastName': 'Snow', 'email': 'johnsnow@gmail.com'}
+        ]
+        return jsonify(users)
+
+    search_words = search_string.split()
+
+    search_query = []
+    for word in search_words:
+        search_query.append(f"first_name LIKE '%{word}%' OR last_name LIKE '%{word}%'")
+
+    search_query_str = ' OR '.join(search_query)
+
+    try:
+        # Search for users in the database based on the search query
+        sql = f"SELECT * FROM users WHERE {search_query_str}"
+        cursor.execute(sql)
+        users = cursor.fetchall()
+
+        user_list = []
+        for user in users:
+            user_dict = {
+                'firstName': user[1],
+                'lastName': user[2],
+                'email': user[3]
+            }
+            user_list.append(user_dict)
+
+        return jsonify(user_list)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/isFollowed', methods=['GET'])
+def is_followed():
+    logged_user_email = request.args.get('loggedUser')
+    profile_user_email = request.args.get('profileUser')
+
+    # Get logged user ID
+    query = "SELECT id FROM users WHERE email = %s"
+    values = (logged_user_email,)
+    cursor.execute(query, values)
+    logged_user_id = cursor.fetchone()[0]
+
+    # Get profile user ID
+    query = "SELECT id FROM users WHERE email = %s"
+    values = (profile_user_email,)
+    cursor.execute(query, values)
+    profile_user_id = cursor.fetchone()[0]
+
+    # Check if the pair (user1, user2) exists in the followers table
+    query = "SELECT COUNT(*) FROM followers WHERE user1 = %s AND user2 = %s"
+    values = (logged_user_id, profile_user_id)
+    cursor.execute(query, values)
+    result = cursor.fetchone()
+
+    is_followed = result[0] > 0
+    return jsonify({'isFollowed': is_followed})
+
+
+
+@app.route('/triggerFollow', methods=['POST'])
+def trigger_follow():
+    logged_user_email = request.args.get('loggedUser')
+    profile_user_email = request.args.get('profileUser')
+    follow = request.args.get('follow')
+
+    # Get logged user ID
+    query = "SELECT id FROM users WHERE email = %s"
+    values = (logged_user_email,)
+    cursor.execute(query, values)
+    logged_user_id = cursor.fetchone()[0]
+
+    # Get profile user ID
+    query = "SELECT id FROM users WHERE email = %s"
+    values = (profile_user_email,)
+    cursor.execute(query, values)
+    profile_user_id = cursor.fetchone()[0]
+
+    if follow == 'true':
+        # Insert a new follow
+        query = "INSERT INTO followers (user1, user2) VALUES (%s, %s)"
+        values = (logged_user_id, profile_user_id)
+    else:
+        # Remove an existing follow
+        query = "DELETE FROM followers WHERE user1 = %s AND user2 = %s"
+        values = (logged_user_id, profile_user_id)
+
+    cursor.execute(query, values)
+    connection.commit()
+
+    # Check if the follow was successful
+    query = "SELECT COUNT(*) FROM followers WHERE user1 = %s AND user2 = %s"
+    values = (logged_user_id, profile_user_id)
+    cursor.execute(query, values)
+    result = cursor.fetchone()
+
+    is_followed = result[0] > 0
+    return jsonify({'isFollowed': is_followed})
+
+
 
 
 

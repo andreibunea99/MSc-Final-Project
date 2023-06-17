@@ -1,0 +1,98 @@
+.explore-container {
+  flex: 1;
+  padding: 16px;
+  position: relative;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 100vh;
+}
+
+.explore-title {
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  padding-top: 3rem;
+  font-size: 300%;
+}
+
+.search-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.search-input {
+  width: 400px;
+  border-radius: 25px;
+}
+
+.search-input input {
+  border-radius: 25px;
+}
+
+.search-input button {
+  border-radius: 0 25px 25px 0;
+  background-color: #f1f4c6;
+  color: #7b1fa2;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.user-row:hover {
+  background-color: #f96d6d;
+  color: white;
+}
+
+.user-row:hover .name,
+.user-row:hover .email {
+  color: white;
+}
+
+.user-details {
+  text-align: center;
+}
+
+.name {
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.email {
+  font-size: 14px;
+  color: #666;
+}
+
+.no-results {
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .user-row {
+    max-width: 70vw;
+  }
+}
