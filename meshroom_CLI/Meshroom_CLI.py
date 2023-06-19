@@ -34,8 +34,7 @@ def run_1_cameraInit(binPath,baseDir,imgDir):
     cmdLine += " --imageFolder {0} --sensorDatabase {1} --output {2}".format(
         imageFolder, sensorDatabase, output)
 
-    cmdLine += " --defaultFieldOfView 45" 
-    cmdLine += " --allowSingleView 1"
+    # cmdLine += " --defaultFieldOfView 45" 
     cmdLine += " --verboseLevel " + verboseLevel
 
     print(cmdLine)
@@ -44,7 +43,7 @@ def run_1_cameraInit(binPath,baseDir,imgDir):
     return 0
 
 
-def run_2_featureExtraction(binPath,baseDir , numberOfImages , imagesPerGroup=40):
+def run_2_featureExtraction(binPath,baseDir , numberOfImages , imagesPerGroup=40, density="normal", quality="normal"):
 
     taskFolder = "/2_FeatureExtraction"
     SilentMkdir(baseDir + taskFolder)
@@ -55,8 +54,10 @@ def run_2_featureExtraction(binPath,baseDir , numberOfImages , imagesPerGroup=40
     output = "\"" + baseDir + taskFolder + "\""
 
     cmdLine = binPath + "\\aliceVision_featureExtraction"
+    # cmdLine += " --describerTypes dspsift"
+    # cmdLine += " --describerDensity " + density
+    # cmdLine += " --describerQuality " + quality
     cmdLine += " --input {0} --output {1}".format(_input, output)
-    cmdLine += " --forceCpuExtraction 1"
 
 
     #when there are more than 40 images, it is good to send them in groups
@@ -88,7 +89,7 @@ def run_3_imageMatching(binPath,baseDir):
     cmdLine += " --input {0} --featuresFolders {1} --output {2}".format(
         _input, featuresFolders, output)
 
-    cmdLine +=  " --tree " + "\""+ str(Path(binPath).parent)+ "/share/aliceVision/vlfeat_K80L3.SIFT.tree\""
+    # cmdLine +=  " --tree " + "\""+ str(Path(binPath).parent)+ "/share/aliceVision/vlfeat_K80L3.SIFT.tree\""
     cmdLine += " --verboseLevel " + verboseLevel
 
     print(cmdLine)
@@ -111,12 +112,8 @@ def run_4_featureMatching(binPath,baseDir,numberOfImages,imagesPerGroup=20):
     cmdLine += " --input {0} --featuresFolders {1} --output {2} --imagePairsList {3}".format(
         _input, featuresFolders, output, imagePairsList)
 
-    cmdLine += " --knownPosesGeometricErrorMax 5"
     cmdLine += " --verboseLevel " + verboseLevel
-
-    cmdLine += " --describerTypes sift --photometricMatchingMethod ANN_L2 --geometricEstimator acransac --geometricFilterType fundamental_matrix --distanceRatio 0.8"
-    cmdLine += " --maxIteration 2048 --geometricError 0.0 --maxMatches 0"
-    cmdLine += " --savePutativeMatches False --guidedMatching False --matchFromKnownCameraPoses False --exportDebugFiles True"
+    # cmdLine += " --minimal2dMotion -1"
 
     #when there are more than 20 images, it is good to send them in groups
     if(numberOfImages>imagesPerGroup):
@@ -150,6 +147,7 @@ def run_5_structureFromMotion(binPath,baseDir):
         _input, output, outputViewsAndPoses, extraInfoFolder, featuresFolders, matchesFolders)
 
     cmdLine += " --verboseLevel " + verboseLevel
+    # cmdLine += " --localBundleAdjustment True --maximumNumberOfMatches 0 --minimumNumberOfMatches 0 --minInputTrackLength 2 --computerStructureColor True"
 
     print(cmdLine)
     os.system(cmdLine)
@@ -186,7 +184,7 @@ def run_7_depthMap(binPath,baseDir ,numberOfImages , groupSize=6 , downscale = 2
         _input,  output, imagesFolder)
 
     cmdLine += " --verboseLevel " + verboseLevel
-    cmdLine += " --downscale " + str(downscale)
+    # cmdLine += " --downscale " + str(downscale)
 
     
     numberOfBatches = int(math.ceil( numberOfImages / groupSize ))
@@ -236,8 +234,8 @@ def run_9_meshing(binPath,baseDir  , maxInputPoints = 50000000  , maxPoints=1000
     cmdLine += " --input {0}  --output {1} --outputMesh {2} --depthMapsFolder {3} ".format(
         _input,  output, outputMesh, depthMapsFolder)
 
-    cmdLine += " --maxInputPoints " + str(maxInputPoints)
-    cmdLine += " --maxPoints " + str(maxPoints)
+    # cmdLine += " --maxInputPoints " + str(maxInputPoints)
+    # cmdLine += " --maxPoints " + str(maxPoints)
     cmdLine += " --verboseLevel " + verboseLevel
 
 
@@ -258,7 +256,7 @@ def run_10_meshFiltering(binPath,baseDir ,keepLargestMeshOnly="True"):
         inputMesh, outputMesh)
 
     cmdLine += " --verboseLevel " + verboseLevel
-    cmdLine += " --keepLargestMeshOnly " + keepLargestMeshOnly
+    # cmdLine += " --keepLargestMeshOnly " + keepLargestMeshOnly
 
     print(cmdLine)
     os.system(cmdLine)
@@ -277,8 +275,8 @@ def run_11_meshDecimate(binPath,baseDir , simplificationFactor=0.8 , maxVertices
         inputMesh, outputMesh)
 
     cmdLine += " --verboseLevel " + verboseLevel
-    cmdLine += " --simplificationFactor " + str(simplificationFactor)
-    cmdLine += " --maxVertices " + str(maxVertices)
+    # cmdLine += " --simplificationFactor " + str(simplificationFactor)
+    # cmdLine += " --maxVertices " + str(maxVertices)
 
     print(cmdLine)
     os.system(cmdLine)
@@ -296,8 +294,8 @@ def run_12_meshResampling(binPath,baseDir , simplificationFactor=0.8 , maxVertic
     cmdLine += " --input {0}  --output {1}".format( inputMesh, outputMesh)
 
     cmdLine += " --verboseLevel " + verboseLevel
-    cmdLine += " --simplificationFactor " + str(simplificationFactor)
-    cmdLine += " --maxVertices " + str(maxVertices)
+    # cmdLine += " --simplificationFactor " + str(simplificationFactor)
+    # cmdLine += " --maxVertices " + str(maxVertices)
 
     print(cmdLine)
     os.system(cmdLine)
@@ -319,10 +317,10 @@ def run_13_texturing(binPath , baseDir , textureSide = 4096 , downscale=4 , unwr
     cmdLine += " --input {0} --inputMesh {1} --output {2} --imagesFolder {3}".format(
         _input, inputMesh, output, imagesFolder)
 
-    cmdLine += " --textureSide " + str(textureSide)
-    cmdLine += " --downscale " + str(downscale)
+    # cmdLine += " --textureSide " + str(textureSide)
+    # cmdLine += " --downscale " + str(downscale)
     cmdLine += " --verboseLevel " + verboseLevel
-    cmdLine += " --unwrapMethod " + unwrapMethod
+    # cmdLine += " --unwrapMethod " + unwrapMethod
 
     print(cmdLine)
     os.system(cmdLine)
@@ -362,7 +360,7 @@ def main():
     hours, rem = divmod(endTime-startTime, 3600)
     minutes, seconds = divmod(rem, 60)
     print("time elapsed: "+"{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
-    raw_input("press any key to close")
+    # raw_input("press any key to close")
 
 
 main()
