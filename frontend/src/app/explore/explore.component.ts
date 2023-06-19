@@ -17,6 +17,7 @@ interface User {
 export class ExploreComponent {
   searchInput: string = '';
   users: User[] = [];
+  following: User[] = [];
   selectedUser: User | null = null;
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -52,6 +53,20 @@ export class ExploreComponent {
   }
 
   ngOnInit() {
+    const email = localStorage.getItem('email');
+    const followersUrl = API_URL + `followers/${email}`;
+
+    this.http.get<User[]>(followersUrl).subscribe(
+      (response: any) => {
+        this.following = response.followers;
+        console.log('Following:', this.following);
+      },
+      (error) => {
+        console.error('Error fetching followers:', error);
+        // Handle the error case
+      }
+    );
+
     const apiUrl = API_URL + 'users/search';
 
     this.http.get<User[]>(apiUrl).subscribe(

@@ -23,6 +23,19 @@
       </div>
 
       <div *ngIf="users.length === 0" class="no-results">No users found.</div>
+
+      <h2 class="following-title">Following</h2>
+      <div class="following-container">
+        <!-- <h2 class="following-title">Following</h2> -->
+        <div class="following-box" *ngFor="let follower of following" (click)="selectUser(follower)">
+          <div class="follower-details">
+            <div class="name">{{ follower.firstName }}</div>
+            <div class="lastName">{{ follower.lastName }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="following.length === 0" class="no-following">No followers.</div>
+      </div>
     </div>
   </div>
 </div>

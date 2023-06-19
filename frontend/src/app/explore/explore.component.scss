@@ -91,6 +91,72 @@
   margin-top: 1rem;
 }
 
+.following-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 50px;
+  // background-color: #333;
+  margin-bottom: 100px;
+}
+
+.following-title {
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  color: #7b1fa2;
+  font-size: 200%;
+  text-align: left;
+  // margin-right: 20px;
+  margin-top: 70px;
+}
+
+.following-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  width: 100px;
+  // margin-right: 20px;
+  max-width: 200px;
+}
+
+.following-box:hover {
+  background-color: #f96d6d;
+  color: white;
+}
+
+.following-box:hover .name,
+.following-box:hover .lastName {
+  color: white;
+}
+
+.follower-details {
+  text-align: center;
+}
+
+.lastName {
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.no-following {
+  font-family: 'Arvo', serif;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
   .user-row {
     max-width: 70vw;
