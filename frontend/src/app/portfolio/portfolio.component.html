@@ -4,8 +4,9 @@
 <div class="portfolio-body">
   <h1 class="portfolio-title">Portfolio</h1>
   <div class="portfolio-grid">
-    <div *ngFor="let model of models" class="portfolio-item">
-      <img [src]="model.preview" alt="Preview Image">
+    
+    <div *ngFor="let model of models" class="portfolio-item" [ngClass]="{ 'no-obj': model.obj === 'None' }">
+      <img [src]="model.preview" alt="Preview Image" [style.opacity]="model.obj ? '1' : '0.5'">
       <div class="model-name">{{ model.name }}</div>
       <div class="action-icons">
         <button mat-icon-button class="action-button" (click)="downloadModel(model)">
@@ -19,6 +20,7 @@
         </button>
       </div>
     </div>
+    
   </div>
 </div>
 

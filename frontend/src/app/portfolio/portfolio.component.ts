@@ -25,16 +25,27 @@ export class PortfolioComponent implements OnInit {
       const apiUrl = API_URL + `models/${encodeURIComponent(email)}`;
       this.http.get(apiUrl).subscribe(
         (response: any) => {
-          this.models = response.map((model: any) => {
+          let modelsWithObj: any[] = [];
+          let modelsWithoutObj: any[] = [];
+          
+          response.forEach((model: any) => {
             model['preview'] = API_URL + `files/${encodeURIComponent(email)}/${model.name}/preview.jpg`;
-            model['obj'] = API_URL + `files/${encodeURIComponent(email)}/${model.name}/texturedMesh.obj`;
-            model['mtl'] = API_URL + `files/${encodeURIComponent(email)}/${model.name}/texturedMesh.mtl`;
-            model['textures'] = model['textures'].map((texture: any) => {
-              texture['path'] = API_URL + `files/${encodeURIComponent(email)}/${model.name}/${texture.filename}`;
-              return texture;
-            });
-            return model;
+            
+            if (model['obj'] !== 'None') {
+              model['obj'] = API_URL + `files/${encodeURIComponent(email)}/${model.name}/texturedMesh.obj`;
+              model['mtl'] = API_URL + `files/${encodeURIComponent(email)}/${model.name}/texturedMesh.mtl`;
+              model['textures'] = model['textures'].map((texture: any) => {
+                texture['path'] = API_URL + `files/${encodeURIComponent(email)}/${model.name}/${texture.filename}`;
+                return texture;
+              });
+              
+              modelsWithObj.push(model);
+            } else {
+              modelsWithoutObj.push(model);
+            }
           });
+          
+          this.models = modelsWithObj.concat(modelsWithoutObj);
           console.log('Models:', this.models);
         },
         error => {
@@ -43,6 +54,7 @@ export class PortfolioComponent implements OnInit {
       );
     }
   }
+  
 
   downloadModel(model: any): void {
     const email = localStorage.getItem('email');
@@ -117,7 +129,22 @@ export class PortfolioComponent implements OnInit {
   }
 
   deleteModel(model: any): void {
-    // Implement the logic to delete the model
-  } 
+    const email = localStorage.getItem('email');
+    if (email) {
+      const apiUrl = API_URL + `delete/${encodeURIComponent(email)}/${encodeURIComponent(model.name)}`;
+      this.http.delete(apiUrl).subscribe(
+        () => {
+          // Model deleted successfully, perform any necessary actions (e.g., update the models list)
+          this.ngOnInit();
+          location.reload();
+        },
+        (error: any) => {
+          // console.error('Error deleting model:', error);
+          location.reload();
+        }
+      );
+    }
+  }
+  
 
 }

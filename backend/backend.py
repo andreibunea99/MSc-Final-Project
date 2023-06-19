@@ -70,9 +70,6 @@ def extract_frames(video_path, save_folder, frame_interval=1):
     video_capture.release()
 
 def run_meshcli_script(user_email, preview, name):
-    script_path = os.path.join(os.getcwd(), '..', 'meshroom_CLI', 'Run.bat')
-    subprocess.call(script_path, shell=True)
-
     user_directory = os.path.join(DATABASE_FOLDER, user_email)
     if not os.path.exists(user_directory):
         os.makedirs(user_directory)
@@ -83,16 +80,19 @@ def run_meshcli_script(user_email, preview, name):
     # Create the model directory inside the user's directory
     os.makedirs(model_directory_path, exist_ok=True)
 
+    # Save the preview as preview.jpg inside the model directory the preview is given as argument of the function
+    preview_path = os.path.join(model_directory_path, 'preview.jpg')
+    preview.save(preview_path)
+
+    script_path = os.path.join(os.getcwd(), '..', 'meshroom_CLI', 'Run.bat')
+    subprocess.call(script_path, shell=True)
+
     # Copy the contents of the 13_Texturing directory to the model directory
     source_directory = os.path.join(os.getcwd(), '..', 'output', '13_Texturing')
     for item in os.listdir(source_directory):
         source_item_path = os.path.join(source_directory, item)
         destination_item_path = os.path.join(model_directory_path, item)
         shutil.copy2(source_item_path, destination_item_path)
-    
-    # Save the preview as preview.jpg inside the model directory the preview is given as argument of the function
-    preview_path = os.path.join(model_directory_path, 'preview.jpg')
-    preview.save(preview_path)
 
 
 
@@ -152,11 +152,30 @@ def upload_video():
 
     return 'Video uploaded successfully'
 
+
+@app.route('/delete/<email>/<model>', methods=['DELETE'])
+def delete_model(email, model):
+    user_directory = os.path.join(DATABASE_FOLDER, email)
+    if not os.path.exists(user_directory):
+        os.makedirs(user_directory)
+
+    model_directory_name = model
+    model_directory_path = os.path.join(user_directory, model_directory_name)
+
+    try:
+        # Delete the model folder and its contents recursively
+        shutil.rmtree(model_directory_path)
+        return "Model deleted successfully", 200
+    except Exception as e:
+        return f"Failed to delete model: {str(e)}", 500
+
+
 @app.route('/files/<email>/<path:file_path>')
 def serve_file(email, file_path):
     DB = r'E:\Final_Project\repo\MSc-Final-Project\database'
     user_directory = os.path.join(DB, email)
     return send_from_directory(user_directory, file_path)
+
 
 @app.route('/models/<email>', methods=['GET'])
 def get_user_models(email):
@@ -171,26 +190,40 @@ def get_user_models(email):
             model = {}
 
             # Get the file paths
-            model['obj'] = f"/files/{email}/{os.path.join(model_directory_name, 'texturedMesh.obj')}"
-            model['mtl'] = f"/files/{email}/{os.path.join(model_directory_name, 'texturedMesh.mtl')}"
             model['preview'] = f"/files/{email}/{os.path.join(model_directory_name, 'preview.jpg')}"
 
-            textures = []
-            for file_name in os.listdir(model_directory_path):
-                if file_name.endswith('.png'):
-                    texture_path = os.path.join(model_directory_path, file_name)
-                    textures.append({
-                        'filename': file_name,
-                        'path': f"/files/{email}/{texture_path}"
-                    })
-            model['textures'] = textures
+            # Check if obj file exists before adding its path
+            obj_file_path = os.path.join(model_directory_path, 'texturedMesh.obj')
+            if os.path.isfile(obj_file_path):
+                print('obj file exists ', obj_file_path)
+                model['obj'] = f"/files/{email}/{os.path.join(model_directory_name, 'texturedMesh.obj')}"
+                model['mtl'] = f"/files/{email}/{os.path.join(model_directory_name, 'texturedMesh.mtl')}"
+
+                textures = []
+                for file_name in os.listdir(model_directory_path):
+                    if file_name.endswith('.png'):
+                        texture_path = os.path.join(model_directory_path, file_name)
+                        if os.path.isfile(texture_path):
+                            textures.append({
+                                'filename': file_name,
+                                'path': f"/files/{email}/{texture_path}"
+                            })
+                model['textures'] = textures
+            else:
+                model['obj'] = 'None'
+                model['mtl'] = 'None'
+                model['textures'] = []
 
             # Get the name of the model (name of the directory)
             model['name'] = model_directory_name
 
             models.append(model)
+    
+    for model in models:
+        print(model['name'], model['obj'])
 
     return jsonify(models)
+
 
 
 @app.route('/previews/<email>', methods=['GET'])
