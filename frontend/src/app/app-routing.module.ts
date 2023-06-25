@@ -7,6 +7,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ExploreComponent } from './explore/explore.component';
+import { ModelPreviewComponent } from './model-preview/model-preview.component';
 
 const routes: Routes = [
   {path: '', component: HomepageComponent},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'portfolio', component: PortfolioComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'explore', component: ExploreComponent}
+  {path: 'explore', component: ExploreComponent},
+  {path: 'model-preview', component: ModelPreviewComponent},
 ];
 
 @NgModule({

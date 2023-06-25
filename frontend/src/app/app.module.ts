@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ExploreComponent } from './explore/explore.component';
+import { ModelPreviewComponent } from './model-preview/model-preview.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ExploreComponent } from './explore/explore.component';
     PortfolioComponent,
     LoginComponent,
     RegisterComponent,
-    ExploreComponent
+    ExploreComponent,
+    ModelPreviewComponent
   ],
   imports: [
     BrowserModule,

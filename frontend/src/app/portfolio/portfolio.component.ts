@@ -145,6 +145,25 @@ export class PortfolioComponent implements OnInit {
       );
     }
   }
+
+  openModelPreview(model: any): void {
+    // const dialogRef = this.dialog.open(ModelPreviewModalComponent, {
+    //   data: {
+    //     objUrl: model.obj,
+    //     mtlUrl: model.mtl,
+    //     textures: model.textures
+    //   },
+    //   width: '800px',
+    //   height: '600px',
+    // });
+
+    // store model in local storage
+    localStorage.setItem('model', JSON.stringify(model));
+
+    // navigate to model preview in new tab
+    window.open('/model-preview', '_blank');
+    
+  }
   
 
 }

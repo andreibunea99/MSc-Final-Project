@@ -129,7 +129,7 @@ def upload_video():
     video_path = os.path.join(app.config['VIDEO_FOLDER'], 'video.mp4')
 
     user_email = request.form.get('email')
-    preview = request.form.get('preview')
+    preview = request.files.get('preview')
     name = request.form.get('name')
 
     video.save(video_path)
@@ -195,7 +195,6 @@ def get_user_models(email):
             # Check if obj file exists before adding its path
             obj_file_path = os.path.join(model_directory_path, 'texturedMesh.obj')
             if os.path.isfile(obj_file_path):
-                print('obj file exists ', obj_file_path)
                 model['obj'] = f"/files/{email}/{os.path.join(model_directory_name, 'texturedMesh.obj')}"
                 model['mtl'] = f"/files/{email}/{os.path.join(model_directory_name, 'texturedMesh.mtl')}"
 
@@ -218,9 +217,6 @@ def get_user_models(email):
             model['name'] = model_directory_name
 
             models.append(model)
-    
-    for model in models:
-        print(model['name'], model['obj'])
 
     return jsonify(models)
 
@@ -288,7 +284,6 @@ def rename_model():
     user_directory = os.path.join(DATABASE_FOLDER, user_email)
     model_directory_path = os.path.join(user_directory, model_name)
     new_directory_path = os.path.join(user_directory, new_name)
-    print(user_email, model_name, new_name)
 
     if not os.path.exists(user_directory) or not os.path.exists(model_directory_path):
         return 'User or model directory not found', 404
@@ -336,8 +331,6 @@ def login():
     email = data['email']
     password = data['password']
 
-    print(data)
-    print(type(email))
     try:
         # Check if the email exists in the users table
         sql = "SELECT * FROM users WHERE email = %s"

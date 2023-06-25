@@ -59,6 +59,8 @@ export class DashboardComponent implements OnInit {
     formData.append('preview', this.previewImageFile);
     formData.append('email', localStorage.getItem('email') ?? '');
     formData.append('name', this.modelName);
+    console.log(this.videoFile);
+    console.log(this.previewImageFile);
 
     this.http.post(API_URL + 'upload/video', formData).subscribe(
       () => {
