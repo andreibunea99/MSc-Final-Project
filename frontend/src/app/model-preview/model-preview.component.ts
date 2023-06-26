@@ -32,6 +32,7 @@ export class ModelPreviewComponent {
 
   private initScene(): void {
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0xa28aeb);
     this.camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
