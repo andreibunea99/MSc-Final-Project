@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ModelLoader : MonoBehaviour
 {
-    private string apiUrl = "http://192.168.1.65:5000"; // Replace with your server URL
+    private string apiUrl = "http://192.168.1.217:5000"; // Replace with your server URL
     public string userEmail = "andreialexbunea@yahoo.com"; // Replace with the desired user email
     public string saveFolder = "SavedModels"; // Replace with the desired save folder name
     public Text feedbackText;
@@ -20,6 +20,12 @@ public class ModelLoader : MonoBehaviour
     {
         Debug.Log("Importing requst");
         StartCoroutine(ImportModels());
+    }
+
+    public void changeEmail(string email)
+    {
+        userEmail = email;
+        Debug.Log("NEW USER EMAIL LOADER " + userEmail);
     }
 
     private IEnumerator ImportModels()

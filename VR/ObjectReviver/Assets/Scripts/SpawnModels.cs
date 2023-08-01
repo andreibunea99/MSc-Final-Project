@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SpawnModels : MonoBehaviour
 {
-    public string apiUrl = "http://192.168.1.65:5000"; // Replace with your server URL
+    public string apiUrl = "http://192.168.1.217:5000"; // Replace with your server URL
 
     public void SpawnModel(string modelName)
     {

@@ -11,17 +11,28 @@ public class ModelPreviewsDisplay : MonoBehaviour
     public GameObject previewPrefab;
     public Transform panelParent;
     public Text feedbackText;
-    private string apiUrl = "http://192.168.1.65:5000"; // Replace with your server URL
+    private string apiUrl = "http://192.168.1.217:5000"; // Replace with your server URL
     public string userEmail = "andreialexbunea@yahoo.com"; // Replace with the desired user email
     private GameObject spawnedObject;
     public float translationIncrement = 0.1f;
     public float rotationIncrement = 90.0f;
+    private GameObject loaderGameObject;
+    private ModelLoader loaderScript;
 
     private void Start()
     {
         //StartCoroutine(LoadModelPreviews());
-        string apiUrl = "http://192.168.1.65:5000";
-}
+        loaderGameObject = GameObject.Find("ModelLoader");
+        loaderScript = loaderGameObject.GetComponent<ModelLoader>();
+        apiUrl = "http://192.168.1.217:5000";
+    }
+
+    public void changeEmail(string email)
+    {
+        userEmail = email;
+        loaderScript.changeEmail(email);
+        Debug.Log("NEW USER EMAIL " + userEmail);
+    }
 
     public void EnablePreviews()
     {
@@ -172,43 +183,53 @@ public class ModelPreviewsDisplay : MonoBehaviour
         //feedbackText.text = objFilePath + " (Size: " + new FileInfo(objFilePath).Length + " bytes)\n" + mtlFilePath + " (Size: " + new FileInfo(mtlFilePath).Length + " bytes)\n";
 
         // Print directory contents
-        string[] files = Directory.GetFiles(currentModelPath);
+        /*string[] files = Directory.GetFiles(currentModelPath);
         string directoryContent = "CurrentModel directory contents:\n";
         foreach (string file in files)
         {
             directoryContent += Path.GetFileName(file) + " (Size: " + new FileInfo(file).Length + " bytes)\n";
-        }
+        }*/
         //feedbackText.text += directoryContent;
 
         try
         {
-            spawnedObject = new OBJLoader().Load(objFilePath, mtlFilePath);
+            // spawnedObject = new OBJLoader().Load(objFilePath, mtlFilePath);
+            OBJLoader loader = new OBJLoader();
+            GameObject modelContainer = loader.Load(objFilePath, mtlFilePath);
+            MeshFilter[] meshFilters = modelContainer.GetComponentsInChildren<MeshFilter>();
+            Debug.Log(meshFilters.Length);
+
+            // Calculate the combined geometric center
+            Vector3 combinedCenter = Vector3.zero;
+            int meshCount = 0;
+            foreach (MeshFilter meshFilter in meshFilters)
+            {
+                combinedCenter += meshFilter.sharedMesh.bounds.center;
+                meshCount++;
+            }
+            if (meshCount > 0)
+            {
+                combinedCenter /= meshCount;
+            }
+
+            // Offset the model by the combined center
+            modelContainer.transform.position = combinedCenter;
 
             // Set the position and scale of the imported object
+            spawnedObject = modelContainer;
             spawnedObject.transform.position = new Vector3(0, 0, 2);
             spawnedObject.transform.localScale = Vector3.one;
 
             // Add necessary components for rendering
             MeshRenderer meshRenderer = spawnedObject.AddComponent<MeshRenderer>();
-            //MeshFilter meshFilter = spawnedObject.AddComponent<MeshFilter>();
 
-            // Load the mesh from the OBJ file
-            //ObjImporter objImporter = new ObjImporter();
-            //Mesh loadedMesh = objImporter.ImportFile(objFilePath);
-            //meshFilter.mesh = loadedMesh;
+            // Add the TextureScript to the spawned object
+            TextureScript textureScript = spawnedObject.AddComponent<TextureScript>();
 
-            // Place the object on the floor
+            // Perform UV decomposition
+            textureScript.PerformUVDecomposition();
+
             PlaceObjectOnFloor(spawnedObject);
-
-            // Display the contents of the "CurrentModel" directory
-            /*string[] files = Directory.GetFiles(currentModelPath);
-            string directoryContent = "CurrentModel directory contents:\n";
-            foreach (string file in files)
-            {
-                directoryContent += Path.GetFileName(file) + "\n";
-            }
-            feedbackText.text = directoryContent + "Model Spawned!";
-            feedbackText.text += " Loaded!";*/
         }
         catch (System.Exception ex)
         {

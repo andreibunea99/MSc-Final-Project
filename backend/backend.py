@@ -6,18 +6,32 @@ import cv2
 import shutil
 import base64
 import mysql.connector
+from mysql.connector.constants import ClientFlag
 
 app = Flask(__name__)
 CORS(app)
 
 # MySQL database connection configuration
+# db_config = {
+#     'host': 'localhost', # 'object-reviver-db.c9rmrlpboxxi.us-east-2.rds.amazonaws.com',
+#     'port': 3306,
+#     'user': 'root', # 'admin',
+#     'password': 'rootpass', # 'andreialex', 
+#     'database': 'local-db',
+# }
+
+# MySQL database connection configuration
+# MySQL database connection configuration
 db_config = {
-    'host': 'object-reviver-db.c9rmrlpboxxi.us-east-2.rds.amazonaws.com',
+    'host': 'localhost',
     'port': 3306,
-    'user': 'admin',
-    'password': 'andreialex',
-    'database': 'object-reviver'
+    'user': 'root',
+    'password': 'rootpass',
+    'database': 'object-reviver',
+    'auth_plugin': 'mysql_native_password'
 }
+
+
 
 # Create a MySQL connection
 connection = mysql.connector.connect(**db_config)

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UserInfo : MonoBehaviour
 {
     UserResponse user;
-    private string apiUrl = "http://192.168.1.65:5000";
+    private string apiUrl = "http://192.168.1.217:5000";
     public GameObject authenticationComponent;
     public GameObject modelSelectionComponent;
     public GameObject followerSelectionComponent;
@@ -15,12 +15,20 @@ public class UserInfo : MonoBehaviour
     public InputField passwordInputField;
     private float lastSubmitTime = 0f;
     private float submitDelay = 1f;
-    private string user_email = null;
+    public string user_email = null;
     public GameObject followerRowPrefab;
     public Transform followersPanel;
     public string currentFollower;
     public float rowSpacing = 0f; // Spacing between follower rows
+    private GameObject canvasGameObject;
+    private ModelPreviewsDisplay modelPreviewsDisplay;
 
+
+    private void Start()
+    {
+        canvasGameObject = GameObject.Find("Canvas");
+        modelPreviewsDisplay = canvasGameObject.GetComponent<ModelPreviewsDisplay>();
+    }
 
     public void submit()
     {
@@ -64,6 +72,8 @@ public class UserInfo : MonoBehaviour
         {
             // Login successful
             user_email = email;
+            modelPreviewsDisplay.changeEmail(email);
+            // modelSelectionComponent.changeEmail(email);
             string responseJson = request.downloadHandler.text;
             UserResponse userData = JsonUtility.FromJson<UserResponse>(responseJson);
             Debug.Log("Login successful: " + userData.firstName + " " + userData.lastName);

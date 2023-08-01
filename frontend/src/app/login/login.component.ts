@@ -23,6 +23,8 @@ export class LoginComponent {
       password: this.password
     };
 
+    console.log('Login data', loginData);
+
     this.http.post(API_URL + 'login', loginData)
       .subscribe(
         (response: any) => {
