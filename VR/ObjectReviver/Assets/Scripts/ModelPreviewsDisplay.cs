@@ -223,12 +223,6 @@ public class ModelPreviewsDisplay : MonoBehaviour
             // Add necessary components for rendering
             MeshRenderer meshRenderer = spawnedObject.AddComponent<MeshRenderer>();
 
-            // Add the TextureScript to the spawned object
-            TextureScript textureScript = spawnedObject.AddComponent<TextureScript>();
-
-            // Perform UV decomposition
-            textureScript.PerformUVDecomposition();
-
             PlaceObjectOnFloor(spawnedObject);
         }
         catch (System.Exception ex)
