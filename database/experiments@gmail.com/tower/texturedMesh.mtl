@@ -1,0 +1,31 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v5.2.0)
+
+newmtl 1001
+Kd 0.600000024 0.600000024 0.600000024
+Ka 0.600000024 0.600000024 0.600000024
+Ks 0 0 0
+illum 1
+map_Kd texture_1001.png
+
+newmtl 1002
+Kd 0.600000024 0.600000024 0.600000024
+Ka 0.600000024 0.600000024 0.600000024
+Ks 0 0 0
+illum 1
+map_Kd texture_1002.png
+
+newmtl 1003
+Kd 0.600000024 0.600000024 0.600000024
+Ka 0.600000024 0.600000024 0.600000024
+Ks 0 0 0
+illum 1
+map_Kd texture_1003.png
+
+newmtl 1004
+Kd 0.600000024 0.600000024 0.600000024
+Ka 0.600000024 0.600000024 0.600000024
+Ks 0 0 0
+illum 1
+map_Kd texture_1004.png
+
