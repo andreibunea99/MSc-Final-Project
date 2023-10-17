@@ -1,4 +1,4 @@
-# 3D-Object-Scanning-Registration-and-Sharing-for-Virtual-Reality-Art-Creation
+# Virtual Reality Interfaces for 3D model reconstruction and sharing
 
 This project comes as a solution for users who would like to create their own 3D models without having any prior knowledge of photogrammetry, visualize the results using a virtual reality platform, store their work and easily share it with others.
 
